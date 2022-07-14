@@ -1,4 +1,6 @@
 # webGL前言
+>author:hqx
+
 three.js的底层是基于webGL技术的，webGL使得浏览器可以直接通过调用GPU的功能创建三维图形，但其底层细节复杂，且需要学习复杂的着色器语言，Three.js则提供了一个很简单的关于WebGL特性的JavaScript API，帮助用户快速创建3D场景
 ## 图形学相关概念
 webGL实际上是利用了GPU的可编程渲染管线来渲染图形到我们的浏览器，利用GLSL着色器语言，来自定义渲染内容。
