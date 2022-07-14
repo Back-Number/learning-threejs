@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Example 02.07 - Cameras</title>
+    <title>Example 02.08 - Cameras</title>
     <script type="text/javascript" src="../libs/three.js"></script>
 
     <script type="text/javascript" src="../libs/stats.js"></script>
@@ -54,27 +54,31 @@
             plane.position.z = 0;
             scene.add(plane);
 
-            // 创建几何体
+            // 在平面上生成立方体阵列
             var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
-
-            // 在场景上生成立方体阵列
+            var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x00ee22 });
             for (var j = 0; j < (planeGeometry.parameters.height / 5); j++) {
                 for (var i = 0; i < planeGeometry.parameters.width / 5; i++) {
-                    var rnd = Math.random() * 0.75 + 0.25;
-                    var cubeMaterial = new THREE.MeshLambertMaterial();
-                    cubeMaterial.color = new THREE.Color(rnd, 0, 0);
                     var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
                     cube.position.z = -((planeGeometry.parameters.height) / 2) + 2 + (j * 5);
                     cube.position.x = -((planeGeometry.parameters.width) / 2) + 2 + (i * 5);
                     cube.position.y = 2;
+
                     scene.add(cube);
                 }
             }
+
+            // 创建焦点红色小球
+            var lookAtGeom = new THREE.SphereGeometry(2);
+            var lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({ color: 0xff0000 }));
+            scene.add(lookAtMesh);
 
             // 添加光源
             var directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
             directionalLight.position.set(-20, 40, 60);
             scene.add(directionalLight);
+
 
             // 添加环境光
             var ambientLight = new THREE.AmbientLight(0x292929);
@@ -110,13 +114,22 @@
             gui.add(controls, 'switchCamera');
             gui.add(controls, 'perspective').listen();
 
-            camera.lookAt(scene.position);
-
             render();
+
+            var step = 0;
 
             // 渲染
             function render() {
                 stats.update();
+                step += 0.02;
+                if (camera instanceof THREE.Camera) {
+                    var x = 10 + (100 * (Math.sin(step)));
+                    // 每次渲染时改变相机位置，追踪小球
+                    camera.lookAt(new THREE.Vector3(x, 10, 0));
+                    // 同时改变小球的位置
+                    lookAtMesh.position.copy(new THREE.Vector3(x, 10, 0));
+                }
+
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
             }
