@@ -26,19 +26,18 @@
 
     function init() {
 
-        //帧率组件
+        // 帧率组件
         var stats = initStats();
 
-        //创建3要素
+        // 创建3要素
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        scene.add(camera);
         var renderer = new THREE.WebGLRenderer();
 
         // 统一场景内物体的材质，即便物体设置了材质
         scene.overrideMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
 
-        //设置渲染器背景颜色，大小，产生阴影
+        // 设置渲染器背景颜色，大小，产生阴影
         renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMapEnabled = true;
